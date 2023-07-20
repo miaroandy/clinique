@@ -59,13 +59,21 @@ class DepenseController extends Controller
                 }
 
 
-                $mois=$request->input('mois');
-                foreach($mois as $mois){
-                    if (checkdate($mois, $request->input('jour'), $request->input('annee'))==false){
+                $mois = $request->input('mois');
+                $datesInvalides = array();
 
-                        return redirect("listeDepense")->with('erreur','date invalide '.$request->input('jour').'-'.$mois.'-'.$request->input('annee'));
-
+                foreach ($mois as $moisValue) {
+                    if (checkdate($moisValue, $request->input('jour'), $request->input('annee')) == false) {
+                        // Formater la date invalide et la stocker dans le tableau $datesInvalides
+                        $dateInvalide = sprintf("%02d-%02d-%04d", $request->input('jour'), $moisValue, $request->input('annee'));
+                        $datesInvalides[] = $dateInvalide;
                     }
+                }
+
+                if (count($datesInvalides) > 0) {
+                    // Si des dates invalides ont été trouvées, rediriger avec le message d'erreur contenant les dates invalides
+                    $datesInvalidesStr = implode(", ", $datesInvalides);
+                    return redirect()->back()->with('erreur', "Dates invalides : $datesInvalidesStr");
                 }
                 $m=$request->input('mois');
 
