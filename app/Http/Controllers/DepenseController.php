@@ -54,10 +54,7 @@ class DepenseController extends Controller
                     $erreur=true;
                     $liberreur=$liberreur.' Type depense invalide';
                 }
-                if($erreur==true){
-                    return redirect("listeDepense")->with('erreur',$liberreur);
-                }
-
+                
 
                 $mois = $request->input('mois');
                 $datesInvalides = array();
@@ -73,7 +70,10 @@ class DepenseController extends Controller
                 if (count($datesInvalides) > 0) {
                     // Si des dates invalides ont été trouvées, rediriger avec le message d'erreur contenant les dates invalides
                     $datesInvalidesStr = implode(", ", $datesInvalides);
-                    return redirect()->back()->with('erreur', "Dates invalides : $datesInvalidesStr");
+                    return redirect()->back()->with('erreur', $liberreur." Dates invalides : $datesInvalidesStr");
+                }
+                if($erreur==true){
+                    return redirect("listeDepense")->with('erreur',$liberreur);
                 }
                 $m=$request->input('mois');
 
