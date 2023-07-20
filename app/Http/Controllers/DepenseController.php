@@ -36,8 +36,11 @@ class DepenseController extends Controller
 
             public function create(Request $request)
             {
+                $erreur=false;
+                $liberreur='';
                 if(substr($request->input('montant'), 0, 1)=='-'){
-                    return redirect("erreur")->with('erreur','montant invalide ');
+                    $erreur=true;
+                    $liberreur='montant invalide';
                 }
                 $data = Typedepense::all();
                 $valide=false;
@@ -48,7 +51,11 @@ class DepenseController extends Controller
                     }
                 }
                 if($valide==false){
-                    return redirect("erreur")->with('erreur','Type Depense invalide ');
+                    $erreur=true;
+                    $liberreur=$liberreur.' Type depense invalide';
+                }
+                if($erreur==true){
+                    return redirect("listeDepense")->with('erreur',$liberreur);
                 }
 
 
