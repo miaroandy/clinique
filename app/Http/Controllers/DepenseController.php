@@ -39,6 +39,19 @@ class DepenseController extends Controller
                 if(substr($request->input('montant'), 0, 1)=='-'){
                     return redirect("erreur")->with('erreur','montant invalide ');
                 }
+                $data = Typedepense::all();
+                $valide=false;
+                foreach($data as $data){
+                    if($data->code==$request->input('idtypedepense')){
+                        $valide=true;
+                        break;
+                    }
+                }
+                if($valide==false){
+                    return redirect("erreur")->with('erreur','Type Depense invalide ');
+                }
+
+
                 $mois=$request->input('mois');
                 foreach($mois as $mois){
                     if (checkdate($mois, $request->input('jour'), $request->input('annee'))==false){
