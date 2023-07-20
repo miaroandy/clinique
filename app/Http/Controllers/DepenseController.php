@@ -40,7 +40,7 @@ class DepenseController extends Controller
                 foreach($mois as $mois){
                     if (checkdate($mois, $request->input('jour'), $request->input('annee'))==false){
 
-                        return redirect("listeDepense")->with('erreur','date invalide');
+                        return redirect("listeDepense")->with('erreur','date invalide '.$request->input('jour').'-'.$mois.'-'.$request->input('annee'));
 
                     }
                 }
