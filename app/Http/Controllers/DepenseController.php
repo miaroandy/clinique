@@ -36,6 +36,9 @@ class DepenseController extends Controller
 
             public function create(Request $request)
             {
+                if(substr($request->input('montant'), 0, 1)=='-'){
+                    return redirect("erreur")->with('erreur','montant invalide ');
+                }
                 $mois=$request->input('mois');
                 foreach($mois as $mois){
                     if (checkdate($mois, $request->input('jour'), $request->input('annee'))==false){
